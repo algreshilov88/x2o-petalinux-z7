@@ -1,0 +1,49 @@
+/include/ "system-conf.dtsi"
+/ {
+chosen {
+bootargs = "console=ttyPS0,115200 earlyprintk uio_pdrv_genirq.of_id=generic-uio root=/dev/mmcblk0p2 rw rootwait";
+};
+	dma_proxy {
+		compatible ="xlnx,dma_proxy";
+		dmas = <&axi_dma_0 0 &axi_dma_0 1>;
+		dma-names = "dma_proxy_tx", "dma_proxy_rx";
+		/*dma-coherent;*/
+	};
+};
+
+&dbg_debug_bridge_0 {
+compatible = "generic-uio";
+};
+
+&axi_jtag_0 {
+compatible = "xlnx,xvc";
+};
+
+&axi_jtag_1 {
+compatible = "xlnx,xvc";
+};
+
+&eth1_axi_ethernet_0 {
+phy-handle = <&phy0>;
+phy-mode = "rgmii-id";
+mdio {
+#address-cells = <1>;
+#size-cells = <0>;
+phy0: phy@4 {
+/*compatible = "marvell,88e1510";*/
+device_type = "ethernet-phy";
+reg = <0x4>;
+};
+};
+};
+
+&watchdog0 {
+status = "okay";
+reset-on-timeout;
+timeout-sec = <10>;
+};
+
+&i2c1 {
+	clock-frequency = <100000>;
+	status = "okay";
+};

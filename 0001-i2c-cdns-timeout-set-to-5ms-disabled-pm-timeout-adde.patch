@@ -1,0 +1,23 @@
+From c69cf980cb1bd3da36cd40588febfb67eb71224b Mon Sep 17 00:00:00 2001
+From: Aleksei Greshilov <aleksei.greshilov@cern.ch>
+Date: Tue, 1 Nov 2022 18:02:12 -0400
+Subject: [PATCH] i2c cdns timeout set to 5ms + disabled pm timeout + added
+ extra i2c_recovery_bus() + adap.retries set to 1
+
+---
+ drivers/i2c/busses/i2c-cadence.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/i2c/busses/i2c-cadence.c b/drivers/i2c/busses/i2c-cadence.c
+index c75ccaec3a5e..b51de7370810 100644
+--- a/drivers/i2c/busses/i2c-cadence.c
++++ b/drivers/i2c/busses/i2c-cadence.c
+@@ -1429,7 +1429,7 @@ static int cdns_i2c_probe(struct platform_device *pdev)
+ 	id->adap.dev.of_node = pdev->dev.of_node;
+ 	id->adap.algo = &cdns_i2c_algo;
+ 	id->adap.timeout = CDNS_I2C_TIMEOUT;
+-	id->adap.retries = 1;		/* Default retry value. */
++	id->adap.retries = 3;		/* Default retry value. */
+ 	id->adap.algo_data = id;
+ 	id->adap.dev.parent = &pdev->dev;
+ 	init_completion(&id->xfer_done);
